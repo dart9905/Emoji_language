@@ -1,0 +1,180 @@
+101 :
+POP [1]
+POP [2]
+POP [3]
+MOV ax, [2]
+MOV bx, [2]
+MUL ax, bx
+PUSH ax
+MOV ax, [1]
+MOV bx, [3]
+MUL ax, bx
+PUSH ax
+MOV ax, 4
+POP bx
+MUL ax, bx
+PUSH ax
+POP ax
+POP bx
+SUB ax, bx
+PUSH ax
+POP [4]
+MOV ax, [4]
+MOV bx, 0
+XOR ax, bx
+JNE 102
+MOV ax, 0
+MOV bx, [2]
+SUB ax, bx
+PUSH ax
+MOV ax, 2
+MOV bx, [1]
+MUL ax, bx
+PUSH ax
+POP ax
+POP bx
+DIV bx
+PUSH ax
+POP [5]
+PUSH [5]
+POP
+102 :
+MOV ax, [4]
+MOV bx, 0
+XOR ax, bx
+JBE 103
+MOV ax, 0
+MOV bx, [2]
+SUB ax, bx
+PUSH ax
+PUSH [4]
+SQRT
+POP ax
+POP bx
+ADD ax, bx
+PUSH ax
+MOV ax, 2
+MOV bx, [1]
+MUL ax, bx
+PUSH ax
+POP ax
+POP bx
+DIV bx
+PUSH ax
+POP [6]
+PUSH [6]
+POP
+MOV ax, 0
+MOV bx, [2]
+SUB ax, bx
+PUSH ax
+PUSH [4]
+SQRT
+POP ax
+POP bx
+SUB ax, bx
+PUSH ax
+MOV ax, 2
+MOV bx, [1]
+MUL ax, bx
+PUSH ax
+POP ax
+POP bx
+DIV bx
+PUSH ax
+POP [7]
+PUSH [7]
+POP
+103 :
+PUSH [1]
+PUSH [2]
+PUSH [3]
+RET
+
+104 :
+POP [8]
+POP [9]
+MOV ax, [8]
+MOV bx, 0
+XOR ax, bx
+JNE 105
+MOV ax, [9]
+MOV bx, 0
+XOR ax, bx
+JNE 106
+PUSH -1
+POP [10]
+PUSH [10]
+POP
+PUSH [10]
+POP
+PUSH [10]
+POP
+106 :
+105 :
+MOV ax, [8]
+MOV bx, 0
+XOR ax, bx
+JE 107
+MOV ax, 0
+MOV bx, [9]
+SUB ax, bx
+PUSH ax
+POP ax
+MOV bx, [8]
+DIV bx
+PUSH ax
+POP [11]
+PUSH [11]
+POP
+107 :
+PUSH [8]
+PUSH [9]
+RET
+
+108 :
+POP [12]
+POP [13]
+POP [14]
+MOV ax, [12]
+MOV bx, 0
+XOR ax, bx
+JNE 109
+PUSH [14]
+PUSH [13]
+CALL 104
+POP [14]
+POP [13]
+109 :
+MOV ax, [12]
+MOV bx, 0
+XOR ax, bx
+JE 110
+PUSH [14]
+PUSH [13]
+PUSH [12]
+CALL 101
+POP [14]
+POP [13]
+POP [12]
+110 :
+PUSH [12]
+PUSH [13]
+PUSH [14]
+RET
+
+BEGIN
+IN
+POP [15]
+IN
+POP [16]
+IN
+POP [17]
+PUSH [17]
+PUSH [16]
+PUSH [15]
+CALL 108
+POP [17]
+POP [16]
+POP [15]
+END
