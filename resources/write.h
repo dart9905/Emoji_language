@@ -24,8 +24,6 @@ declaration_cmd\
 
 int SWITCH_ADD (Cell_t* cell, struct t_stack* stack, struct List_t* list, FILE* file) {
     
-    
-    
     #include "../resources/Comand.h"
     {
         CreatFunVall (cell, file, stack, list);
@@ -34,7 +32,7 @@ int SWITCH_ADD (Cell_t* cell, struct t_stack* stack, struct List_t* list, FILE* 
             
             if (cell->nextl->data [0] != '\0')
                 CreatASSRetF (cell->nextl, file, PUSH_f, LEFT_f);
-            fprintf(file,"RET\n\n");
+            fprintf(file,"ret\n\n");
         }
     }
     
@@ -58,6 +56,7 @@ int CreatASS (Tree_t* Tree, Cell_t* cell, const char* str) {
     t_stack stack;
     stack.Construct (&stack, 10);
     
+    fprintf(file,"jmp begin\n");
     CreatASSRet (Tree, cell, &stack, list, file);
     
     fclose(file);
@@ -78,6 +77,8 @@ Cell_t* CreatASSRet (Tree_t* Tree, Cell_t* cell, struct t_stack* stack, struct L
     if (cell->nextr != NULL) {
         cell = CreatASSRet (Tree, cell->nextr, stack, list, file);
     }
+    
+    
     
     SWITCH_ADD (cell, stack, list, file);// функция обязательна должна возвращать pos_prev указатель на предыдующую ветку дерева!!!!!!!!
     
@@ -109,9 +110,9 @@ Cell_t* CreatASSRetF (Cell_t* cell, FILE* file, int mark, int param) {
     if ((cell->nextl == NULL) && (cell->nextr == NULL)) {
         if (cell->data [0] != '\0') {
             if (mark == POP_f)
-                fprintf(file,"POP %s\n", cell->data);
+                fprintf(file,"pop %s\n", cell->data);
             if (mark == PUSH_f)
-                fprintf(file,"PUSH %s\n", cell->data);
+                fprintf(file,"push %s\n", cell->data);
         }
     }
     
@@ -143,7 +144,7 @@ int CreatFunVall (Cell_t* cell, FILE* file, struct t_stack* stack, struct List_t
                     
                     List_Cell_t* lcell = PositionCellValS (list, cell->prev->data);
                     
-                    fprintf(file, "CALL %i\n", lcell->gotonumber);
+                    fprintf(file, "call %i\n", lcell->gotonumber);
                     
                     if (cell->data [0] != '\0')
                         CreatASSRetF (cell, file, POP_f, RIGHT_f);

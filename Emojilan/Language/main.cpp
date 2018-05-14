@@ -14,7 +14,7 @@
 
 
 
-const char* TREE_FILES = "../../resources/save x^2.txt";//read
+const char* TREE_FILES = "../../resources/save x!.txt";//read
 const char* TREE_FILES1 = "../../resources/savefiletotree.txt";
 const char* CODE_FILES1 = "../../resources/savefiletocodeasm.txt";
 const char* LOG_FILES_NAME = "../../resources/logstack.txt";

@@ -47,7 +47,7 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "YES"
-      customWorkingDirectory = "/Users/macbook/Documents/GitHub/Emoji_language/Emoji"
+      customWorkingDirectory = "/Users/macbook/Documents/GitHub/Emoji_language/Emojitocom/Emoji"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"

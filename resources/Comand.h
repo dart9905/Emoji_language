@@ -10,47 +10,47 @@
 
 #define READAXBX \
     if ((cell->nextl->nextl == NULL) && (cell->nextl->nextr == NULL)) {\
-        fprintf(file,"MOV ax, %s\n", cell->nextl->data);\
+        fprintf(file,"mov ax, %s\n", cell->nextl->data);\
     } else \
-        fprintf(file,"POP ax\n");\
+        fprintf(file,"pop ax\n");\
 \
     if ((cell->nextr->nextl == NULL) && (cell->nextr->nextr == NULL)) {\
-        fprintf(file,"MOV bx, %s\n", cell->nextr->data);\
+        fprintf(file,"mov bx, %s\n", cell->nextr->data);\
     } else \
-        fprintf(file,"POP bx\n");
+        fprintf(file,"pop bx\n");
 
 
 #define DEF_ADD \
     READAXBX\
-    fprintf(file, "ADD ax, bx\nPUSH ax\n");\
+    fprintf(file, "add ax, bx\npush ax\n");\
     return 0;
 
 
 #define SUB_DEF \
     READAXBX\
-    fprintf(file, "SUB ax, bx\nPUSH ax\n");\
+    fprintf(file, "sub ax, bx\npush ax\n");\
     return 0;
 
 
 #define DIV_DEF \
     READAXBX\
-    fprintf(file, "DIV bx\nPUSH ax\n");\
+    fprintf(file, "div bx\npush ax\n");\
     return 0;
 
 
 #define MUL_DEF \
     READAXBX\
-    fprintf(file, "MUL ax, bx\nPUSH ax\n");\
+    fprintf(file, "mul ax, bx\npush ax\n");\
     return 0;
 
 
 #define EQU_DEF \
     if ((cell->nextl->nextl == NULL) && (cell->nextl->nextr == NULL)) {\
-        fprintf(file,"PUSH %s\n", cell->nextl->data);\
+        fprintf(file,"push %s\n", cell->nextl->data);\
     }\
 \
     if ((cell->nextr->nextl == NULL) && (cell->nextr->nextr == NULL)) {\
-        fprintf(file,"POP %s\n", cell->nextr->data);\
+        fprintf(file,"pop %s\n", cell->nextr->data);\
     }\
     return 0;
 
@@ -63,91 +63,91 @@
 #define MOR_DEF \
     GOTO_WHILE\
     READAXBX\
-    fprintf(file, "XOR ax, bx\n");\
+    fprintf(file, "xor ax, bx\n");\
     stack->Push(stack, stack->number + 1);\
-    fprintf(file, "JBE %i\n", stack->Peek(stack) GOTO);\
+    fprintf(file, "jbe %i\n", stack->Peek(stack) GOTO);\
     return 0;
 
 
 #define LES_DEF \
     READAXBX\
-    fprintf(file, "XOR ax, bx\n");\
+    fprintf(file, "xor ax, bx\n");\
     stack->Push(stack, stack->number + 1);\
-    fprintf(file, "JAE %i\n", stack->Peek(stack) GOTO);\
+    fprintf(file, "jae %i\n", stack->Peek(stack) GOTO);\
     return 0;
 
 
 #define EQUEQU_DEF \
     READAXBX\
-    fprintf(file, "XOR ax, bx\n");\
+    fprintf(file, "xor ax, bx\n");\
     stack->Push(stack, stack->number + 1);\
-    fprintf(file, "JNE %i\n", stack->Peek(stack) GOTO);\
+    fprintf(file, "jne %i\n", stack->Peek(stack) GOTO);\
     return 0;
 
 
 #define NOEQU_DEF \
     READAXBX\
-    fprintf(file, "XOR ax, bx\n");\
+    fprintf(file, "xor ax, bx\n");\
     stack->Push(stack, stack->number + 1);\
-    fprintf(file, "JE %i\n", stack->Peek(stack) GOTO);\
+    fprintf(file, "je %i\n", stack->Peek(stack) GOTO);\
     return 0;
 
 
 #define LESEQU_DEF \
     READAXBX\
-    fprintf(file, "XOR ax, bx\n");\
+    fprintf(file, "xor ax, bx\n");\
     stack->Push(stack, stack->number + 1);\
-    fprintf(file, "JA %i\n", stack->Peek(stack) GOTO);\
+    fprintf(file, "ja %i\n", stack->Peek(stack) GOTO);\
     return 0;
 
 
 #define MOREQU_DEF \
     READAXBX\
-    fprintf(file, "XOR ax, bx\n");\
+    fprintf(file, "xor ax, bx\n");\
     stack->Push(stack, stack->number + 1);\
-    fprintf(file, "JB %i\n", stack->Peek(stack) GOTO);\
+    fprintf(file, "jb %i\n", stack->Peek(stack) GOTO);\
     return 0;
 
 
 #define DEF_WHI \
-    fprintf(file, "CALL %i\n", stack->Peek(stack) - 1 GOTO);\
+    fprintf(file, "call %i\n", stack->Peek(stack) - 1 GOTO);\
     fprintf(file, "%i :\n", stack->Pop(stack) GOTO);\
     stack->Pop(stack);\
     return 0;
 
 
 #define DEF_END \
-    fprintf(file,"END\n");\
+    fprintf(file,"end\n");\
     return 0;
 
 
 #define DEF_BEG \
-    fprintf(file,"BEGIN\n");\
+fprintf(file,"begin :\n");\
     return 0;
 
 
 #define DEF_REA \
 if ((cell->nextl->nextl == NULL) && (cell->nextl->nextr == NULL)) {\
-    fprintf(file,"IN\n", cell->nextl->data);\
-    fprintf(file,"POP %s\n", cell->nextl->data);\
+    fprintf(file,"in\n", cell->nextl->data);\
+    fprintf(file,"pop %s\n", cell->nextl->data);\
 }\
 return 0;
 
 
 #define DEF_PRI \
 if ((cell->nextl->nextl == NULL) && (cell->nextl->nextr == NULL)) {\
-    fprintf(file,"PUSH %s\n", cell->nextl->data);\
-    fprintf(file,"POP\n", cell->nextl->data);\
+    fprintf(file,"push %s\n", cell->nextl->data);\
+    fprintf(file,"out\n", cell->nextl->data);\
 }\
 return 0;
 
 
 #define DEF_SQR \
     if ((cell->nextl->nextl == NULL) && (cell->nextl->nextr == NULL)) {\
-        fprintf(file,"PUSH %s\n", cell->nextl->data);\
+        fprintf(file,"push %s\n", cell->nextl->data);\
     }\
 \
-    fprintf(file, "SQRT\n");\
+    fprintf(file, "sqrt\n");\
     return 0;
 
 
