@@ -22,7 +22,7 @@ void compile            (FILE* input_file, const char* command, Label_t* labels,
 void compile_file       (const char* input_file_name, Label_t* labels, int* num_of_labels, int* buffer, int* i);
 void write_to_file      (int* buffer, const int number_of_commands);
 
-#define DEF_CMD(name, compiler_code, cpu_code, disassembler_code)
+#define DEF_CMD(name, compiler_code)
 #define DEF_REG(name, code)
 
 #include "commands.h"
@@ -79,7 +79,7 @@ void compile_file (const char* input_file_name, Label_t* labels, int* num_of_lab
         assert (&label);
         
         fscanf (input_file, "%s", command);
-        for (int i = 0; command[i] != '\0'; i++, command[i] = std::tolower(command[i])) {};
+        for (int i = 0; command[i] != '\0'; i++, command[i] = std::toupper(command[i])) {};
         
         if (!label)
             compile (input_file, command, labels, *num_of_labels, buffer, i);
@@ -99,7 +99,7 @@ void compile_file (const char* input_file_name, Label_t* labels, int* num_of_lab
 
 int tell_register (const char* register_name)
 {
-#define DEF_CMD(name, compiler_code, cpu_code, disassembler_code)
+#define DEF_CMD(name, compiler_code)
 #define DEF_REG(name, code)\
 code
     
@@ -122,7 +122,7 @@ code
 //-------------------------------------------------------------
 void compile (FILE* input_file, const char* command, Label_t* labels, const int num_of_labels, int* buffer, int* index)
 {
-#define DEF_CMD(name, compiler_code, cpu_code, disassembler_code)\
+#define DEF_CMD(name, compiler_code)\
 compiler_code
 #define DEF_REG(name, code)
     
@@ -162,4 +162,3 @@ void write_to_file (int* buffer, const int number_of_commands)
     
     fclose (output_file);
 }
-
