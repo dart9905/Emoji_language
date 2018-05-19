@@ -63,7 +63,7 @@
 #define MOR_DEF \
     GOTO_WHILE\
     READAXBX\
-    fprintf(file, "xor ax, bx\n");\
+    fprintf(file, "cmd ax, bx\n");\
     stack->Push(stack, stack->number + 1);\
     fprintf(file, "jbe %i\n", stack->Peek(stack) GOTO);\
     return 0;
@@ -71,7 +71,7 @@
 
 #define LES_DEF \
     READAXBX\
-    fprintf(file, "xor ax, bx\n");\
+    fprintf(file, "cmd ax, bx\n");\
     stack->Push(stack, stack->number + 1);\
     fprintf(file, "jae %i\n", stack->Peek(stack) GOTO);\
     return 0;
@@ -79,7 +79,7 @@
 
 #define EQUEQU_DEF \
     READAXBX\
-    fprintf(file, "xor ax, bx\n");\
+    fprintf(file, "cmd ax, bx\n");\
     stack->Push(stack, stack->number + 1);\
     fprintf(file, "jne %i\n", stack->Peek(stack) GOTO);\
     return 0;
@@ -87,7 +87,7 @@
 
 #define NOEQU_DEF \
     READAXBX\
-    fprintf(file, "xor ax, bx\n");\
+    fprintf(file, "cmd ax, bx\n");\
     stack->Push(stack, stack->number + 1);\
     fprintf(file, "je %i\n", stack->Peek(stack) GOTO);\
     return 0;
@@ -95,7 +95,7 @@
 
 #define LESEQU_DEF \
     READAXBX\
-    fprintf(file, "xor ax, bx\n");\
+    fprintf(file, "cmd ax, bx\n");\
     stack->Push(stack, stack->number + 1);\
     fprintf(file, "ja %i\n", stack->Peek(stack) GOTO);\
     return 0;
@@ -103,7 +103,7 @@
 
 #define MOREQU_DEF \
     READAXBX\
-    fprintf(file, "xor ax, bx\n");\
+    fprintf(file, "cmd ax, bx\n");\
     stack->Push(stack, stack->number + 1);\
     fprintf(file, "jb %i\n", stack->Peek(stack) GOTO);\
     return 0;

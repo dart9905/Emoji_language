@@ -42,7 +42,7 @@
     }\
 \
     else
-/*CHAANGE binnary -> index*/
+
 
 #define REGISTER_NAME\
         char* register_name = (char*) calloc (REGISTER_SZ, sizeof (*register_name));\
@@ -196,43 +196,6 @@
                 \
                 break;
 
-/*enum commands {
-    END   =  0,
-    PUSH  =  1,
-    ADD   =  2,
-    SUB   =  3,
-    MUL   =  4,
-    DIV   =  5,
-    OUT   =  6,
-    IN    =  7,
-    SQRT  =  8,
-    SIN   =  9,
-    COS   = 10,
-    POP   = 11,
-    JMP   = 12,
-    JE    = 13,
-    JNE   = 14,
-    JA    = 15,
-    JAE   = 16,
-    JB    = 17,
-    JBE   = 18,
-    CALL  = 19,
-    REV   = 20
-};
-
-enum registers {
-    AX = 100,
-    BX = 200,
-    CX = 300,
-    DX = 400
-};
-
-enum pushtypes {
-    VAL = 101,
-    REG = 202,
-    RAM = 303,
-    REGRAM = 404
-};*/
 
 
 DEF_CMD(PUSH, COMMAND(PUSH)

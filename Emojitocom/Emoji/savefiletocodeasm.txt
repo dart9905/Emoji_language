@@ -1,0 +1,45 @@
+jmp begin
+101 :
+pop [1]
+pop [2]
+mov ax, [1]
+mov bx, 1
+sub ax, bx
+push ax
+mov ax, [2]
+pop bx
+mul ax, bx
+push ax
+pop [2]
+mov ax, [1]
+mov bx, 1
+sub ax, bx
+push ax
+pop [1]
+mov ax, [1]
+mov bx, 1
+xor ax, bx
+jbe 102
+push [2]
+push [1]
+call 101
+pop [2]
+pop [1]
+102 :
+push [1]
+push [2]
+ret
+
+begin :
+in
+pop [3]
+push [3]
+pop [4]
+push [4]
+push [3]
+call 101
+pop [4]
+pop [3]
+push [4]
+out
+end

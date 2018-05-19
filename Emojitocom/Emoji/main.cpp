@@ -49,6 +49,7 @@ int main ()
     
     scanf ("%s", input_file_name);
     
+    //
     compile_file (input_file_name, labels, &num_of_labels, buffer, &number_of_commands);
     number_of_commands = 0;
     compile_file (input_file_name, labels, &num_of_labels, buffer, &number_of_commands);
@@ -78,6 +79,7 @@ void compile_file (const char* input_file_name, Label_t* labels, int* num_of_lab
         assert (&label);
         
         fscanf (input_file, "%s", command);
+        for (int i = 0; command[i] != '\0'; i++, command[i] = std::tolower(command[i])) {};
         
         if (!label)
             compile (input_file, command, labels, *num_of_labels, buffer, i);
@@ -154,7 +156,7 @@ void write_to_file (int* buffer, const int number_of_commands)
     FILE* output_file = fopen ("CPU_commands.txt", "w");
     assert (output_file);
     
-    fprintf (output_file, "Emoji_A1.1mac");
+    fprintf (output_file, "KDIv2.2");//"Emoji_A1.1mac");
     
     fwrite (buffer, sizeof (int), number_of_commands, output_file);
     

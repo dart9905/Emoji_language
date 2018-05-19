@@ -1,6 +1,5 @@
- //----------------------------------------------//
-///ENUMS USED IN COMPILER, CPU and DISASSEMBLER///
-//----------------------------------------------//
+///ENUMS USED IN COMPILER, CPU and DISASSEMBLER
+//---------------------------------------------
 enum commands {
     END   =  0,//
     PUSH  =  1,//
@@ -10,9 +9,9 @@ enum commands {
     DIV   =  5,//
     OUT   =  6,//
     IN    =  7,//
-    SQRT  =  8,//
-    SIN   =  9,//
-    COS   = 10,//
+    SQRT  =  8,
+    SIN   =  9,
+    COS   = 10,
     POP   = 11,//
     JMP   = 12,//
     JE    = 13,//
@@ -21,8 +20,8 @@ enum commands {
     JAE   = 16,//
     JB    = 17,//
     JBE   = 18,//
-    CALL  = 19,//
-    REV   = 20 //
+    CALL  = 19,
+    REV   = 20
 };
 
 enum registers {
