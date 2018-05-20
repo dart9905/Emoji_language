@@ -30,6 +30,13 @@ void write_to_file      (int* buffer, const int number_of_commands);
 #undef DEF_REG
 #undef DEF_CMD
 
+void upstr(char* command) {
+    
+    for (int i = 0; command[i] != '\0'; i++) {
+        command[i] = std::toupper(command[i]);
+    }
+}
+
 int main ()
 {
     Label_t* labels = (Label_t*) calloc (NUM_OF_LABEL, sizeof (*labels));
@@ -79,7 +86,7 @@ void compile_file (const char* input_file_name, Label_t* labels, int* num_of_lab
         assert (&label);
         
         fscanf (input_file, "%s", command);
-        for (int i = 0; command[i] != '\0'; i++, command[i] = std::toupper(command[i])) {};
+        upstr(command);
         
         if (!label)
             compile (input_file, command, labels, *num_of_labels, buffer, i);
@@ -140,12 +147,10 @@ bool islabel (FILE* input_file)
 {
     char* label_simbol = (char*) calloc (LABEL_SIZE, sizeof (*label_simbol));
     assert (label_simbol);
-    
     int number = -1;
     assert (&number);
     
     fscanf (input_file, "\n%[:]%n", label_simbol, &number);
-    
     free (label_simbol);
     
     return number != -1;
@@ -156,7 +161,7 @@ void write_to_file (int* buffer, const int number_of_commands)
     FILE* output_file = fopen ("CPU_commands.txt", "w");
     assert (output_file);
     
-    fprintf (output_file, "KDIv2.2");//"Emoji_A1.1mac");
+    fprintf (output_file, "Emoji_A1.1mac");
     
     fwrite (buffer, sizeof (int), number_of_commands, output_file);
     

@@ -51,7 +51,7 @@
         int number = -1;\
         assert (&number);\
 \
-        fscanf (input_file, " %[ABCDX] %n", register_name, &number);
+        fscanf (input_file, " %[ABCDXabcdx] %n", register_name, &number);
 
 #define NOT_WRONG_COMMAND\
         if (number == -1)\
@@ -93,8 +93,10 @@ DEF_CMD(PUSH, COMMAND(PUSH)
 
         getc (input_file);
 
-        fscanf (input_file, "[%[ABCDX]]%n", register_name, &number);
-
+        fscanf (input_file, "[%[ABCDXabcdx]]%n", register_name, &number);
+        
+        upstr(register_name);
+        
         if (number != -1)
         {
             buffer[(*index)++] = PUSH;
@@ -105,7 +107,9 @@ DEF_CMD(PUSH, COMMAND(PUSH)
 
         else
         {
-            fscanf (input_file, "%[ABCDX]%n", register_name, &number);
+            fscanf (input_file, "%[ABCDXabcdx]%n", register_name, &number);
+            upstr(register_name);
+
 
             if (number == -1)
             {
@@ -145,6 +149,83 @@ DEF_CMD(PUSH, COMMAND(PUSH)
 
     else)
 
+
+DEF_CMD(MOV, COMMAND(MOV)
+        {
+            //REGISTER_NAME
+            char* register_name = (char*) calloc (REGISTER_SZ, sizeof (*register_name));
+            assert (register_name);
+            
+            int number = -1;
+            assert (&number);
+            
+            
+            buffer[(*index)++] = MOV;
+            
+            
+            
+            for (int i = 0; i < 2; i++) {
+                
+                getc (input_file);
+                if (i == 1)
+                    getc (input_file);
+            
+                fscanf (input_file, "[%[ABCDXabcdx]]%n", register_name, &number);
+                upstr(register_name);
+                
+                if (number != -1)
+                {
+                    buffer[(*index)++] = REGRAM;
+                    buffer[(*index)++] = tell_register (register_name);
+                    //binnary += 21;
+                }
+                
+                else
+                {
+                    fscanf (input_file, "%[ABCDXabcdx]%n", register_name, &number);
+                    upstr(register_name);
+                    if (number == -1)
+                    {
+                        double value = 0;
+                        assert (&value);
+                        
+                        fscanf (input_file, "%lf%n", &value, &number);
+                        
+                        NOT_WRONG_COMMAND
+                        
+                        if (getc (input_file) != ']')
+                        {
+                            buffer[(*index)++] = VAL;
+                            buffer[(*index)++] = (int)value;
+                            //binnary += 5;
+                        }
+                        else
+                        {
+                            buffer[(*index)++] = RAM;
+                            buffer[(*index)++] = (int)value;
+                            //binnary += 14;
+                        }
+                    }
+                    else
+                    {
+                        buffer[(*index)++] = REG;
+                        buffer[(*index)++] = tell_register (register_name);
+                        binnary += 1;
+                    }
+                }
+                register_name[0] = '\0';
+                number = -1;
+                
+            }
+            
+            free (register_name);
+            
+            
+        }
+        
+        else)
+
+
 DEF_CMD(POP, COMMAND(POP)
     {
         char* register_name = (char*) calloc (REGISTER_SZ, sizeof (*register_name));
@@ -154,8 +235,8 @@ DEF_CMD(POP, COMMAND(POP)
         assert (&number);
         getc (input_file);
 
-        fscanf (input_file, "[%[ABCDX]]%n", register_name, &number);
-
+        fscanf (input_file, "[%[ABCDXabcdx]]%n", register_name, &number);
+        upstr(register_name);
         if (number != -1)
         {
             buffer[(*index)++] = POP;
@@ -165,8 +246,8 @@ DEF_CMD(POP, COMMAND(POP)
         }
         else
         {
-            fscanf (input_file, "%[ABCDX]%n", register_name, &number);
-
+            fscanf (input_file, "%[ABCDXabcdx]%n", register_name, &number);
+            upstr(register_name);
             if (number == -1)
             {
                 int value = 0;
@@ -207,7 +288,7 @@ DEF_CMD(SQRT, SIMPLE_COMMAND(SQRT, 0))
 DEF_CMD(SIN,  SIMPLE_COMMAND(SIN, 0))
 DEF_CMD(COS,  SIMPLE_COMMAND(COS, 0))
 
-DEF_CMD(REV, SIMPLE_COMMAND(REV, 1))
+DEF_CMD(RET, SIMPLE_COMMAND(RET, 1))
 
 DEF_CMD(JE,  JUMP_COMMAND(JE,  11))
 DEF_CMD(JNE, JUMP_COMMAND(JNE, 11))

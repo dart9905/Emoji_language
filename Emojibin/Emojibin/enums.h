@@ -20,8 +20,8 @@ enum commands {
     JAE   = 16,//
     JB    = 17,//
     JBE   = 18,//
-    CALL  = 19,
-    REV   = 20,
+    CALL  = 19,//
+    REV   = 20,//
     CMP   = 21,//
     MOV   = 22//
 };

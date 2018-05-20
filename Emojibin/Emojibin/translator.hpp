@@ -4,7 +4,7 @@
 
 #undef TRAN_CMD
 
-const int SIGNSIZE = 7;
+const int SIGNSIZE = 13;
 const int MAX_SIZE = 100000;
 const int HEADER_SIZE = 210;
 

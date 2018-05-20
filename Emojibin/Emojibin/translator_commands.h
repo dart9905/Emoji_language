@@ -104,7 +104,7 @@ TRAN_CMD(OUT, { 							//194
 		DB (0x88) DB (0x1f)					//mov byte [rdi], bl
 		DW (0xff48) DB (0xc1)					//inc rcx
 
-		DB (0xb8) DD (0x1)					//mov rax, 1
+		DB (0xb8) DW (0x1)					//mov rax, 1
 		DB (0xbf) DD (0x1)					//mov rdi, 1
 		DW (0xbe48) DQ (0x6000c2)				//mov rsi, buffer
 		DW (0x8948) DB (0xca)					//mov rdx, rcx

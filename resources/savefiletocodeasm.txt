@@ -1,45 +1,40 @@
-jmp begin
-101 :
-pop [1]
-pop [2]
-mov ax, [1]
-mov bx, 1
-sub ax, bx
-push ax
-mov ax, [2]
-pop bx
-mul ax, bx
-push ax
-pop [2]
-mov ax, [1]
-mov bx, 1
-sub ax, bx
-push ax
-pop [1]
-mov ax, [1]
-mov bx, 1
-cmd ax, bx
-jbe 102
-push [2]
-push [1]
-call 101
-pop [2]
-pop [1]
-102 :
-push [1]
-push [2]
-ret
+JMP :BEGIN
+:101
+POP [1]
+POP [2]
+PUSH [1]
+PUSH 1
+SUB
+PUSH [2]
+MUL
+POP [2]
+PUSH [1]
+PUSH 1
+SUB
+POP [1]
+PUSH 1
+PUSH [1]
+JBE :102
+PUSH [2]
+PUSH [1]
+CALL :101
+POP [2]
+POP [1]
+:102
+PUSH [1]
+PUSH [2]
+RET
 
-begin :
-in
-pop [3]
-push [3]
-pop [4]
-push [4]
-push [3]
-call 101
-pop [4]
-pop [3]
-push [4]
-out
-end
+:BEGIN
+IN
+POP [3]
+PUSH [3]
+POP [4]
+PUSH [4]
+PUSH [3]
+CALL :101
+POP [4]
+POP [3]
+PUSH [4]
+OUT
+END

@@ -22,7 +22,7 @@ enum commands {
     JB    = 17,//
     JBE   = 18,//
     CALL  = 19,//
-    REV   = 20,//
+    RET   = 20,//
     CMP   = 21,//
     MOV   = 22//
 };
