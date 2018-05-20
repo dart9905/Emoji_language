@@ -9,6 +9,8 @@ const int MAX_COMMAND = 100, REGISTER_SZ = 10, CODE_SIZE = 100000, LABEL_SIZE = 
 NUM_OF_LABEL = 50, PUSH_VAL = 2;
 
 int binnary = 0;
+int binnary_size_1 = 0;
+int binnary_size_2 = 0;
 
 struct Label_t
 {
@@ -99,6 +101,14 @@ void compile_file (const char* input_file_name, Label_t* labels, int* num_of_lab
         }
         
     }
+    if (binnary_size_1 == 0)
+        binnary_size_1 = binnary;
+    else {
+        binnary_size_2 = binnary;
+        if (binnary_size_1 != binnary_size_2)
+            assert(0);
+        }
+    
     binnary = 0;
     
     fclose (input_file);

@@ -22,6 +22,7 @@ class translator
 		void make_input_buffer ();
 		void translate ();
 		void make_output_file ();
+        void make_bin ();
 
 };
 

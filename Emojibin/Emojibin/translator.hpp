@@ -5,10 +5,30 @@
 #undef TRAN_CMD
 
 const int SIGNSIZE = 13;
-const int MAX_SIZE = 100000;
-const int HEADER_SIZE = 210;
+const int MAX_SIZE = 5000;
+const int HEADER_SIZE = 0;//210;
 
 size_t size_of_file (FILE* file);
+
+
+void translator::make_bin () {
+    FILE* file = fopen ("start_file.s", "w");
+    assert (file);
+    fprintf(file, "DEFAULT REL\n");
+    fprintf(file, "section .data\n");
+    fprintf(file, "Text:       dq      0\n");
+    fprintf(file, "section .text\n");
+    fprintf(file, "global start\n");
+    fprintf(file, "start:\n");
+    for (int i = 0; i < MAX_SIZE; i++)
+        fprintf(file, "nop\n");
+    fprintf(file, "mov rax, 0x2000001\n"); //System call number for exit = 1
+    fprintf(file, "xor rdi, rdi\n");       //Exit success = 0
+    fprintf(file, "syscall\n");             //Invoke the kernel)
+    
+    fclose(file);
+    //system("nasm -f macho64 /Users/macbook/Documents/GitHub/Emoji_language/Emojibin/Emojibin/start_file.s && ld -macosx_version_min 10.7.0 -o /Users/macbook/Documents/GitHub/Emoji_language/Emojibin/Emojibin/start_file /Users/macbook/Documents/GitHub/Emoji_language/Emojibin/Emojibin/start_file.o");
+}
 
 void translator::make_input_buffer ()
 {
@@ -116,7 +136,7 @@ void translator::make_header ()
     for (int i = 0; i<HEADER_SIZE; i++)
         DB (0x90)
     //*/
-    //*
+    /*
 	DB (0x7f)
 	DB ('E')
 	DB ('L')

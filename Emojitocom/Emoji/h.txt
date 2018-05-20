@@ -1,2 +1,3 @@
-push 12321
+push 10
+out
 end

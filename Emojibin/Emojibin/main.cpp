@@ -15,9 +15,11 @@
 int main ()
 {
     translator translator;
+    //translator.make_bin ();
     translator.make_input_buffer ();
     translator.translate ();
     translator.make_output_file ();
+    system("chmod a+x run");
     system ("chmod 777 ./run");
     return 0;
 }
