@@ -34,8 +34,8 @@ void translator::translate ()
 
 	_output_current = _output_buffer;
 
-	DW (0x8948) DB (0xe5)			//mov rbp, rsp
-	DW (0x8148) DB (0xec) DD (0x400)	//sub rsp, 1024d
+	//DW (0x8948) DB (0xe5)			    //mov rbp, rsp
+	//DW (0x8148) DB (0xec) DD (0x400)	//sub rsp, 1024d
 
 	_output_buffer = (char*)_output_buffer + 10;
 
@@ -112,6 +112,11 @@ size_t size_of_file (FILE* file)
 
 void translator::make_header ()
 {
+    /*
+    for (int i = 0; i<HEADER_SIZE; i++)
+        DB (0x90)
+    //*/
+    //*
 	DB (0x7f)
 	DB ('E')
 	DB ('L')
@@ -119,37 +124,37 @@ void translator::make_header ()
 	DB (0x02)
 	DB (0x01)
 	DB (0x01)
-	DB (0x00)
-	DQ (0x00)
-	DW (0x02)
-	DW (0x3e)
-	DD (0x01)
-	DQ (0x4000b0)
-	DQ (0x40)
-	DQ (0x00)
-	DD (0x00)
-	DW (0x40)
-	DW (0x38)
-	DW (0x02)
-	DW (0x00)
-	DW (0x00)
-	DW (0x00)
-	DD (0x01)                                 
-	DD (0x05)                                
-	DQ (0x00)                                 
-	DQ (0x400000)                              
-	DQ (0x400000)                              
-	DQ (0xd2 + _output_size)
-	DQ (0xd2 + _output_size)
-	DQ (0x10)                                  
-	DD (0x01)                                 
-	DD (0x06)                                  
-	DQ (0xb2)                                  
-	DQ (0x6000b2)                  
-	DQ (0x6000b2)                             
-	DQ (0x20)                                 
-	DQ (0x20)                           
-	DQ (0x10)                                 
+	DB (0x00)           //8
+	DQ (0x00)           //8
+	DW (0x02)           //
+	DW (0x3e)           //4
+	DD (0x01)           //4
+	DQ (0x4000b0)       //8
+	DQ (0x40)           //8
+	DQ (0x00)           //8
+	DD (0x00)           //4
+	DW (0x40)           //2
+	DW (0x38)           //2
+	DW (0x02)           //2
+	DW (0x00)           //2
+	DW (0x00)           //2
+	DW (0x00)           //2
+	DD (0x01)           //4
+	DD (0x05)           //4
+	DQ (0x00)           //8
+	DQ (0x400000)           //8
+	DQ (0x400000)           //8
+	DQ (0xd2 + _output_size)           //8
+	DQ (0xd2 + _output_size)           //8
+	DQ (0x10)           //8
+	DD (0x01)            //4
+	DD (0x06)           //4
+	DQ (0xb2)           //8
+	DQ (0x6000b2)           //8
+	DQ (0x6000b2)           //8
+	DQ (0x20)           //8
+	DQ (0x20)           //8
+	DQ (0x10)           //8
 	DB (0xeb)                          
 	DB (0x20)
 	DB ('0')                                  
@@ -167,5 +172,6 @@ void translator::make_header ()
 	DB ('c')
 	DB ('d')
 	DB ('e')
-	DB ('f')
+	DB ('f')           //18
+    //*/
 }

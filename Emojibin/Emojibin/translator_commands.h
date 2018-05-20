@@ -37,15 +37,15 @@
 
 TRAN_CMD(END, {								//17
 		DW (0x8148) DB (0xc5) DD (0x400)    
-		DB (0xb8)   DQ (0x02000001)				        //mov rax, 0x2000001
+		DB (0xb8)   DD(0x02000001)				        //mov rax, 0x2000001
 		DW (0x3148) DB (0xff)					        //xor rdi, rdi
 		DW (0x050f) 						            //syscall
 
 		})
 
-TRAN_CMD(OUT, { 							            //194
+TRAN_CMD(OUT, { 						    //194
 		DB (0x58)						                //pop rax
-		
+        //*/
 		DB (0x53)						                //push rbx
 		DB (0x51)						                //push rcx
 		DB (0x52)						                //push rdx
@@ -92,7 +92,7 @@ TRAN_CMD(OUT, { 							            //194
 		DB (0x58)						                //pop rax
 		DW (0x8348) DB (0xfb) DB (0x00)				    //cmp rbx, 0d
 		DB (0x75) DB (0xc0)					            //jne    400179 <_start.Nxt>
-        //*
+        //*/
 		DW (0x8349) DW (0xf8)					        //cmp r8, 0 /////////======================
 		DB (0x75) DB (0x0a)					            //jne .prt
 		DB (0xb3) DB (0x30)					            //mov byte bl, '0'
@@ -103,16 +103,17 @@ TRAN_CMD(OUT, { 							            //194
 		DB (0xb3) DB (0xa)					            //mov byte bl, 0ah
 		DB (0x88) DB (0x1f)					            //mov byte [rdi], bl
 		DW (0xff48) DB (0xc1)					        //inc rcx
-
-		DB (0xb8) DQ (0x02000004)                       //mov rax, 0x2000004
+        //*/
+		DB (0xb8) DD (0x02000004)                       //mov rax, 0x2000004
 		DB (0xbf) DD (0x1)					            //mov rdi, 1
 		DW (0xbe48) DQ (0x6000c2)				        //mov rsi, buffer
 		DW (0x8948) DB (0xca)					        //mov rdx, rcx
 		DW (0x050f)						                //syscall
-
+        //*/
 		DB (0x5a)						                //push rdx
 		DB (0x59)						                //push rcx
-		DB (0x5b)						                //push rbx
+		DB (0x5b)                                       //push rbx
+        //*/
 		})
 
 TRAN_CMD (PUSH, {
