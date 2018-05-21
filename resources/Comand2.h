@@ -5,139 +5,150 @@
     if (cell->prev != NULL)\
         if (strcmp(cell->prev->data, "while") == 0) {\
             stack->Push(stack, stack->Peek(stack) + 1);\
-            fprintf(file, "%i :\n", stack->Peek(stack) GOTO);\
+            fprintf(file, "l%i:\n", stack->Peek(stack) GOTO);\
         }\
 
 #define READAXBX \
     if ((cell->nextl->nextl == NULL) && (cell->nextl->nextr == NULL)) {\
-        fprintf(file,"mov ax, %s\n", cell->nextl->data);\
+        fprintf(file,"mov qword rax, %s\n", cell->nextl->data);\
     } else \
-        fprintf(file,"pop ax\n");\
+        fprintf(file,"pop rax\n");\
 \
     if ((cell->nextr->nextl == NULL) && (cell->nextr->nextr == NULL)) {\
-        fprintf(file,"mov bx, %s\n", cell->nextr->data);\
+        fprintf(file,"mov qword rbx, %s\n", cell->nextr->data);\
     } else \
-        fprintf(file,"pop bx\n");
+        fprintf(file,"pop rbx\n");
 
 
 #define DEF_ADD \
     READAXBX\
-    fprintf(file, "add ax, bx\npush ax\n");\
+    fprintf(file, "add eax, ebx\npush rax\n");\
     return 0;
 
 
 #define SUB_DEF \
     READAXBX\
-    fprintf(file, "sub ax, bx\npush ax\n");\
+    fprintf(file, "sub rax, rbx\npush rax\n");\
     return 0;
 
 
 #define DIV_DEF \
     READAXBX\
-    fprintf(file, "div bx\npush ax\n");\
+    fprintf(file, "div ebx\npush rax\n");\
     return 0;
 
 
 #define MUL_DEF \
     READAXBX\
-    fprintf(file, "mul ax, bx\npush ax\n");\
+    fprintf(file, "mul ebx\npush rax\n");\
     return 0;
 
 
 #define EQU_DEF \
     if ((cell->nextl->nextl == NULL) && (cell->nextl->nextr == NULL)) {\
-        fprintf(file,"push %s\n", cell->nextl->data);\
+        fprintf(file,"mov qword r12, %s\n", cell->nextl->data);\
+        fprintf(file,"push r12\n");\
     }\
 \
     if ((cell->nextr->nextl == NULL) && (cell->nextr->nextr == NULL)) {\
-        fprintf(file,"pop %s\n", cell->nextr->data);\
+        fprintf(file,"mov qword r12, %s\n", cell->nextr->data);\
+        fprintf(file,"pop r12\n");\
     }\
     return 0;
 
 
 #define DEF_IF \
-    fprintf(file, "%i :\n", stack->Pop (stack) GOTO);\
+    fprintf(file, "l%i:\n", stack->Pop (stack) GOTO);\
     return 0;
 
 
 #define MOR_DEF \
     GOTO_WHILE\
     READAXBX\
-    fprintf(file, "cmd ax, bx\n");\
+    fprintf(file, "cmp rax, rbx\n");\
     stack->Push(stack, stack->number + 1);\
-    fprintf(file, "jbe %i\n", stack->Peek(stack) GOTO);\
+    fprintf(file, "jbe l%i\n", stack->Peek(stack) GOTO);\
     return 0;
 
 
 #define LES_DEF \
     READAXBX\
-    fprintf(file, "cmd ax, bx\n");\
+    fprintf(file, "cmp rax, rbx\n");\
     stack->Push(stack, stack->number + 1);\
-    fprintf(file, "jae %i\n", stack->Peek(stack) GOTO);\
+    fprintf(file, "jae l%i\n", stack->Peek(stack) GOTO);\
     return 0;
 
 
 #define EQUEQU_DEF \
     READAXBX\
-    fprintf(file, "cmd ax, bx\n");\
+    fprintf(file, "cmp rax, rbx\n");\
     stack->Push(stack, stack->number + 1);\
-    fprintf(file, "jne %i\n", stack->Peek(stack) GOTO);\
+    fprintf(file, "jne l%i\n", stack->Peek(stack) GOTO);\
     return 0;
 
 
 #define NOEQU_DEF \
     READAXBX\
-    fprintf(file, "cmd ax, bx\n");\
+    fprintf(file, "cmp rax, rbx\n");\
     stack->Push(stack, stack->number + 1);\
-    fprintf(file, "je %i\n", stack->Peek(stack) GOTO);\
+    fprintf(file, "je l%i\n", stack->Peek(stack) GOTO);\
     return 0;
 
 
 #define LESEQU_DEF \
     READAXBX\
-    fprintf(file, "cmd ax, bx\n");\
+    fprintf(file, "cmp rax, rbx\n");\
     stack->Push(stack, stack->number + 1);\
-    fprintf(file, "ja %i\n", stack->Peek(stack) GOTO);\
+    fprintf(file, "ja l%i\n", stack->Peek(stack) GOTO);\
     return 0;
 
 
 #define MOREQU_DEF \
     READAXBX\
-    fprintf(file, "cmd ax, bx\n");\
+    fprintf(file, "cmp rax, rbx\n");\
     stack->Push(stack, stack->number + 1);\
-    fprintf(file, "jb %i\n", stack->Peek(stack) GOTO);\
+    fprintf(file, "jb l%i\n", stack->Peek(stack) GOTO);\
     return 0;
 
 
 #define DEF_WHI \
-    fprintf(file, "call %i\n", stack->Peek(stack) - 1 GOTO);\
-    fprintf(file, "%i :\n", stack->Pop(stack) GOTO);\
+    fprintf(file, "call l%i\n", stack->Peek(stack) - 1 GOTO);\
+    fprintf(file, "l%i:\n", stack->Pop(stack) GOTO);\
     stack->Pop(stack);\
     return 0;
 
-
+//fprintf(file,"end\n");
 #define DEF_END \
-    fprintf(file,"end\n");\
+    fprintf(file,"\n");\
+    fprintf(file,"mov rax, 0x2000001      ; System call number for exit = 1\n");\
+    fprintf(file,"mov rdi, 0              ; Exit success = 0\n");\
+    fprintf(file,"syscall                 ; Invoke the kernel\n");\
     return 0;
 
 
 #define DEF_BEG \
-fprintf(file,"begin :\n");\
+fprintf(file,"begin:\n");\
     return 0;
 
 
 #define DEF_REA \
 if ((cell->nextl->nextl == NULL) && (cell->nextl->nextr == NULL)) {\
-    fprintf(file,"in\n", cell->nextl->data);\
-    fprintf(file,"pop %s\n", cell->nextl->data);\
+    fprintf(file,"mov rsi, r13\n");\
+    fprintf(file,"mov rdi, r14\n");\
+    fprintf(file,"call _scanf\n");\
+    fprintf(file,"mov qword r11, [r13]\n");\
+    fprintf(file,"mov qword %s, r11\n", cell->nextl->data);\
 }\
 return 0;
 
 
 #define DEF_PRI \
 if ((cell->nextl->nextl == NULL) && (cell->nextl->nextr == NULL)) {\
-    fprintf(file,"push %s\n", cell->nextl->data);\
-    fprintf(file,"out\n", cell->nextl->data);\
+    fprintf(file,"mov qword r11, %s\n", cell->nextl->data);\
+    fprintf(file,"mov qword [r13], r11\n", cell->nextl->data);\
+    fprintf(file,"mov rdi, r14\n");\
+    fprintf(file,"mov rsi, r13\n");\
+    fprintf(file,"call _printf\n");\
 }\
 return 0;
 

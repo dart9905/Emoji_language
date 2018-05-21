@@ -24,7 +24,7 @@ declaration_cmd\
 
 int SWITCH_ADD (Cell_t* cell, struct t_stack* stack, struct List_t* list, FILE* file) {
     
-    #include "../resources/Comand.h"
+    #include "../resources/Comand2.h"
     {
         CreatFunVall (cell, file, stack, list);
         
@@ -55,7 +55,33 @@ int CreatASS (Tree_t* Tree, Cell_t* cell, const char* str) {
     
     t_stack stack;
     stack.Construct (&stack, 10);
+    //fprintf(file,"DEFAULT REL\n");
     
+    
+    fprintf(file,"extern _printf\n");
+    fprintf(file,"extern _scanf\n");
+    
+    fprintf(file,"section .data\n");
+    fprintf(file,"Text:       dq      \"%%i\",0\n");
+    fprintf(file,".len        equ     $ - Text\n");
+    fprintf(file,"STR:        dq      0\n");
+    fprintf(file,".len        equ     $ - STR\n");
+    
+    fprintf(file,"array       dq      0");
+    for (int i = 0; i < 49; i++)
+         fprintf(file,",0");
+    fprintf(file,"\n");
+    fprintf(file,"section .text\n");
+    fprintf(file,"global start\n");
+    
+    fprintf(file,"start:\n");
+    
+    fprintf(file,"mov     r14,    Text\n");
+    fprintf(file,"mov     r15,    array\n");
+    fprintf(file,"sub     r15,    Text.len\n");
+    fprintf(file,"sub     r15,    STR.len\n");
+    fprintf(file,"mov     r13,    STR\n");
+    fprintf(file,"sub     r13,    Text.len\n");
     fprintf(file,"jmp begin\n");
     CreatASSRet (Tree, cell, &stack, list, file);
     
@@ -109,10 +135,14 @@ Cell_t* CreatASSRetF (Cell_t* cell, FILE* file, int mark, int param) {
     
     if ((cell->nextl == NULL) && (cell->nextr == NULL)) {
         if (cell->data [0] != '\0') {
-            if (mark == POP_f)
-                fprintf(file,"pop %s\n", cell->data);
-            if (mark == PUSH_f)
-                fprintf(file,"push %s\n", cell->data);
+            if (mark == POP_f) {
+                fprintf(file,"mov qword rbx, %s\n", cell->data);
+                fprintf(file,"pop rbx\n");
+            }
+            if (mark == PUSH_f) {
+                fprintf(file,"mov qword rbx, %s\n", cell->data);
+                fprintf(file,"push rbx\n");
+            }
         }
     }
     
@@ -129,7 +159,7 @@ int CreatFunVall (Cell_t* cell, FILE* file, struct t_stack* stack, struct List_t
                     if (cell->prev->nextl == cell) {
                         
                         stack->Push(stack, stack->number + 1);\
-                        fprintf(file, "%i :\n", stack->Peek(stack) + 100);
+                        fprintf(file, "l%i:\n", stack->Peek(stack) + 100);
                         
                         ListAddBefore (list, list->position_first_cell, cell->prev->data);
                         list->position_first_cell->next->gotonumber = stack->Peek(stack) + 100;
@@ -144,7 +174,7 @@ int CreatFunVall (Cell_t* cell, FILE* file, struct t_stack* stack, struct List_t
                     
                     List_Cell_t* lcell = PositionCellValS (list, cell->prev->data);
                     
-                    fprintf(file, "call %i\n", lcell->gotonumber);
+                    fprintf(file, "call l%i\n", lcell->gotonumber);
                     
                     if (cell->data [0] != '\0')
                         CreatASSRetF (cell, file, POP_f, RIGHT_f);

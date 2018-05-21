@@ -1,0 +1,3 @@
+cd /Users/macbook/Documents/GitHub/Emoji_language/resources/123
+
+nasm -f macho64 savefiletocodeasm.s && ld -macosx_version_min 10.7.0 -o savefiletocodeasm savefiletocodeasm.o && ./savefiletocodeasm
