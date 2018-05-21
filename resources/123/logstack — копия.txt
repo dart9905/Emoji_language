@@ -1,3 +1,18 @@
 cd /Users/macbook/Documents/GitHub/Emoji_language/resources/123
 
-nasm -f macho64 savefiletocodeasm.s && ld -macosx_version_min 10.7.0 -o savefiletocodeasm savefiletocodeasm.o && ./savefiletocodeasm
+nasm -f macho64 savefiletocodeasm.s && clang -Wl,-no_pie savefiletocodeasm.o -o savefiletocodeasm && ./savefiletocodeasm
+
+
+
+
+jbe l102
+mov qword rbx, [r15+2]
+push rbx
+mov qword rbx, [r15+1]
+push rbx
+call l101
+pop rbx
+mov qword [r15+2], rbx
+pop rbx
+mov qword [r15+1], rbx
+l102:

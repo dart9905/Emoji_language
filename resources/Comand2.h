@@ -40,7 +40,7 @@
 
 #define MUL_DEF \
     READAXBX\
-    fprintf(file, "mul ebx\npush rax\n");\
+    fprintf(file, "mul bx\npush rax\n");\
     return 0;
 
 
@@ -51,8 +51,8 @@
     }\
 \
     if ((cell->nextr->nextl == NULL) && (cell->nextr->nextr == NULL)) {\
-        fprintf(file,"mov qword r12, %s\n", cell->nextr->data);\
         fprintf(file,"pop r12\n");\
+        fprintf(file,"mov qword %s, r12\n", cell->nextr->data);\
     }\
     return 0;
 
@@ -135,6 +135,7 @@ fprintf(file,"begin:\n");\
 if ((cell->nextl->nextl == NULL) && (cell->nextl->nextr == NULL)) {\
     fprintf(file,"mov rsi, r13\n");\
     fprintf(file,"mov rdi, r14\n");\
+    fprintf(file,"xor rax, rax\n");\
     fprintf(file,"call _scanf\n");\
     fprintf(file,"mov qword r11, [r13]\n");\
     fprintf(file,"mov qword %s, r11\n", cell->nextl->data);\
@@ -144,11 +145,8 @@ return 0;
 
 #define DEF_PRI \
 if ((cell->nextl->nextl == NULL) && (cell->nextl->nextr == NULL)) {\
-    fprintf(file,"mov qword r11, %s\n", cell->nextl->data);\
-    fprintf(file,"mov qword [r13], r11\n", cell->nextl->data);\
-    fprintf(file,"mov rdi, r14\n");\
-    fprintf(file,"mov rsi, r13\n");\
-    fprintf(file,"call _printf\n");\
+    fprintf(file,"mov qword rbx, %s\n", cell->nextl->data);\
+    fprintf(file,"call PrintTen\n");\
 }\
 return 0;
 

@@ -30,8 +30,10 @@ int SWITCH_ADD (Cell_t* cell, struct t_stack* stack, struct List_t* list, FILE* 
         
         if(('a' <= cell->data [0]) && (cell->data [0] <= 'z') && (cell->nextr != NULL) && (cell->nextl != NULL)) {
             
+            fprintf(file, "pop r9\n");
             if (cell->nextl->data [0] != '\0')
                 CreatASSRetF (cell->nextl, file, PUSH_f, LEFT_f);
+            fprintf(file, "push r9\n");
             fprintf(file,"ret\n\n");
         }
     }
@@ -62,7 +64,7 @@ int CreatASS (Tree_t* Tree, Cell_t* cell, const char* str) {
     fprintf(file,"extern _scanf\n");
     
     fprintf(file,"section .data\n");
-    fprintf(file,"Text:       dq      \"%%i\",0\n");
+    fprintf(file,"Text:       dq      \"%%i\",10,0\n");
     fprintf(file,".len        equ     $ - Text\n");
     fprintf(file,"STR:        dq      0\n");
     fprintf(file,".len        equ     $ - STR\n");
@@ -72,9 +74,9 @@ int CreatASS (Tree_t* Tree, Cell_t* cell, const char* str) {
          fprintf(file,",0");
     fprintf(file,"\n");
     fprintf(file,"section .text\n");
-    fprintf(file,"global start\n");
+    fprintf(file,"global _main\n");
     
-    fprintf(file,"start:\n");
+    fprintf(file,"_main:\n");
     
     fprintf(file,"mov     r14,    Text\n");
     fprintf(file,"mov     r15,    array\n");
@@ -83,6 +85,12 @@ int CreatASS (Tree_t* Tree, Cell_t* cell, const char* str) {
     fprintf(file,"mov     r13,    STR\n");
     fprintf(file,"sub     r13,    Text.len\n");
     fprintf(file,"jmp begin\n");
+    
+    long int number_of_char = 0;
+    char* my_buffer = ReadFiles ("../../resources/out.s" , &number_of_char);
+    fprintf(file,"\n\n%s\n\n\n",my_buffer);
+    delete [] my_buffer;
+    
     CreatASSRet (Tree, cell, &stack, list, file);
     
     fclose(file);
@@ -136,8 +144,8 @@ Cell_t* CreatASSRetF (Cell_t* cell, FILE* file, int mark, int param) {
     if ((cell->nextl == NULL) && (cell->nextr == NULL)) {
         if (cell->data [0] != '\0') {
             if (mark == POP_f) {
-                fprintf(file,"mov qword rbx, %s\n", cell->data);
                 fprintf(file,"pop rbx\n");
+                fprintf(file,"mov qword %s, rbx\n", cell->data);
             }
             if (mark == PUSH_f) {
                 fprintf(file,"mov qword rbx, %s\n", cell->data);
@@ -163,9 +171,11 @@ int CreatFunVall (Cell_t* cell, FILE* file, struct t_stack* stack, struct List_t
                         
                         ListAddBefore (list, list->position_first_cell, cell->prev->data);
                         list->position_first_cell->next->gotonumber = stack->Peek(stack) + 100;
-                        if (cell->data [0] != '\0')
+                        if (cell->data [0] != '\0') {
+                            fprintf(file, "pop r9\n");
                             CreatASSRetF (cell, file, POP_f, LEFT_f);
-                        
+                            fprintf(file, "push r9\n");
+                        }
                     }
                 } else {
                     
@@ -178,6 +188,7 @@ int CreatFunVall (Cell_t* cell, FILE* file, struct t_stack* stack, struct List_t
                     
                     if (cell->data [0] != '\0')
                         CreatASSRetF (cell, file, POP_f, RIGHT_f);
+                    
                     
                 }
             }
